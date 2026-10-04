@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { Lesson } from "@/types/course";
 import Modal from "@/components/ui/Modal";
 import { AlarmIcon, ChevronLeftIcon } from "@/components/ui/Icon";
-import { sampleExam } from "@/data/exams";
+import { getExamForLesson } from "@/data/exams";
 import { loadCourseState, saveCourseState } from "@/lib/progress";
 import styles from "./ExamModal.module.css";
 
@@ -37,7 +37,7 @@ export default function ExamModal({
   lesson,
   onFinished,
 }: ExamModalProps) {
-  const exam = sampleExam; // one mock exam reused for every quiz lesson
+  const exam = getExamForLesson(lesson?.id ?? "");
   const total = exam.questions.length;
 
   const [questionIndex, setQuestionIndex] = useState(0);

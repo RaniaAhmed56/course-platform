@@ -85,12 +85,12 @@
 }
 
 .badgeQuestion {
-  color: var(--color-primary);
+  color: #15735e; /* AA on the light green chip */
   background: var(--color-badge-green-bg);
 }
 
 .badgeMinutes {
-  color: var(--color-pink);
+  color: #c9254a; /* AA on the light pink chip */
   background: var(--color-badge-pink-bg);
 }
 

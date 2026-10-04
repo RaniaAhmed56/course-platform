@@ -58,7 +58,7 @@ export default function CourseMaterials({ course }: { course: Course }) {
 
   return (
     <div className={styles.card}>
-      <h3 className={styles.cardTitle}>Course Materials</h3>
+      <p className={styles.cardTitle}>Course Materials</p>
       <div className={styles.columns}>
         {renderColumn(true, "col-1")}
         {renderColumn(false, "col-2")}

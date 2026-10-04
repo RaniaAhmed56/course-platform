@@ -85,7 +85,10 @@
 
   .cardTitle {
     display: block;
+    font-family: var(--font-heading);
     font-size: 16.5px;
+    font-weight: 600;
+    color: var(--color-ink);
     margin-bottom: 4px;
   }
 

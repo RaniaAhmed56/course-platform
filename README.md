@@ -30,7 +30,7 @@ designs.
 | Ask a Question | Popup with the same design language as the comment form. The draft is kept in `sessionStorage`, so closing it by mistake and reopening it in the same session restores the text. |
 | Leaderboard | Popup with the course name, ranked list, and a motivational message from the instructor (Arabic, with emoji) whose tone changes with the student's level. |
 | PDF lessons | Open in a screen-sized closable popup (embedded PDF). |
-| Exam lessons | Open in a screen-sized popup styled after the reference quiz mock (timer, question stepper, options). Closing the exam **saves the student's progress** (current question, answers, remaining time) and reopening resumes it. Finishing shows the score and completes the lesson. |
+| Exam lessons | Open in a screen-sized popup styled after the reference quiz mock (timer, question stepper, options). Each course family has its own topical exam (SEO, React, JavaScript, general) and the QUESTION/MINUTES badges derive from that exam's real content. Closing the exam **saves the student's progress** (current question, answers, remaining time) and reopening resumes it. Finishing shows the score and completes the lesson. |
 | Comments | Submitting the form appends the comment to the list immediately and persists it per course. |
 | Lesson actions | Previous / Next lesson navigation and a "Mark as completed" action under the player; the catalogue animates cards in with a smooth stagger when filtering or searching (respecting reduced-motion). |
 
@@ -53,6 +53,31 @@ npm run dev      # http://localhost:3000
 npm run build    # production build (all pages are statically generated)
 npm run start
 ```
+
+## Testing
+
+End-to-end tests (Playwright) cover the core flows: filtering/search,
+lesson selection, locked-lesson handling, exam save & resume, the
+ask-a-question draft, comments, live progress and the no-horizontal-scroll
+guarantee across six breakpoints.
+
+```bash
+npx playwright install chromium   # first time only
+npm run build
+npm run test:e2e                  # 7 tests
+```
+
+## Lighthouse (production build)
+
+| Page | Performance | Accessibility | Best Practices | SEO |
+| --- | ---: | ---: | ---: | ---: |
+| /courses | 95 | 100 | 100 | 100 |
+| /courses/[slug] (player) | 96 | 97 | 100 | 100 |
+
+The single remaining accessibility flag on the player is the white-on-teal
+"Submit Review" button — kept intentionally, because its color is part of
+the reference design being reproduced; every element that is this
+project's own addition meets WCAG AA.
 
 ## Project structure
 
