@@ -1,0 +1,150 @@
+.wrapper {
+  margin: 0;
+}
+
+.frame {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #101314;
+}
+
+.frame:fullscreen {
+  border-radius: 0;
+  aspect-ratio: auto;
+}
+
+.video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 0;
+  cursor: pointer;
+}
+
+.frame:fullscreen .video {
+  object-fit: contain;
+}
+
+/* Dark tint over the poster, matching the reference */
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 12, 13, 0.18);
+  pointer-events: none;
+}
+
+.playOverlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-surface);
+  color: var(--color-pink);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  transition: transform 0.15s ease;
+}
+
+.playOverlay:hover {
+  transform: translate(-50%, -50%) scale(1.06);
+}
+
+.playTriangle {
+  margin-left: 4px;
+}
+
+/* Hover control bar */
+.controls {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.55));
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.frame:hover .controls,
+.frame:focus-within .controls {
+  opacity: 1;
+}
+
+.controlBtn {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  transition: background 0.15s ease;
+}
+
+.controlBtn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.controlBtn.active {
+  background: var(--color-primary);
+}
+
+.controlSpacer {
+  flex: 1;
+}
+
+.nowPlaying {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  font-size: 13.5px;
+  color: var(--color-text);
+}
+
+.nowPlaying strong {
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+.nowPlayingDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  flex-shrink: 0;
+}
+
+/* The Wide button only makes sense on desktop */
+@media (max-width: 767px) {
+  /* Single-column layouts (tablet): cap the player's height so the video
+     never swallows the whole viewport — it keeps its 3:2 shape, centered */
+  .frame {
+    width: min(100%, calc((100vh - 230px) * 1.5));
+    margin-inline: auto;
+  }
+
+  .wideBtn {
+    display: none;
+  }
+
+  .playOverlay {
+    width: 64px;
+    height: 64px;
+  }
+
+  .nowPlaying {
+    margin-top: 8px;
+  }
+}

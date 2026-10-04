@@ -1,0 +1,118 @@
+/* ---------------------------------------------------------------------------
+   Design tokens — sampled directly from the reference screenshots
+   --------------------------------------------------------------------------- */
+:root {
+  /* Brand / accents */
+  --color-primary: #41b69d;        /* teal — buttons, active states        */
+  --color-primary-dark: #37a68e;
+  --color-green: #6abd8a;          /* progress-bar fill                    */
+  --color-pink: #e54860;           /* play icon, "minutes" badge           */
+  --color-navy: #485293;           /* "You" / 63% progress labels          */
+
+  /* Surfaces */
+  --color-band: #f5f9fa;           /* page-title band background           */
+  --color-surface: #ffffff;
+  --color-panel: #f1f5f7;          /* leaderboard inner panel              */
+  --color-badge-green-bg: #eef9f5;
+  --color-badge-pink-bg: #fdf0f3;
+
+  /* Text */
+  --color-ink: #181818;            /* headings / dark text                 */
+  --color-text: #767676;           /* body copy                            */
+  --color-text-mid: #4a4d50;       /* lesson titles, labels                */
+
+  /* Lines */
+  --color-border: #e5e5e5;
+  --color-track: #e6e6e6;          /* progress-bar track                   */
+
+  /* Exam popup */
+  --color-exam-blue: #4d68e8;
+  --color-exam-option: #6e86f7;
+  --color-exam-timer: #ffd130;
+
+  /* Typography (families injected by next/font in layout.tsx) */
+  --font-heading: var(--font-spartan), "Futura", sans-serif;
+  --font-body: var(--font-quicksand), "Trebuchet MS", sans-serif;
+
+  /* Layout */
+  --container: 1170px;
+  --radius-card: 10px;
+  --shadow-card: 0 6px 25px rgba(0, 0, 0, 0.06);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background: var(--color-surface);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  color: var(--color-ink);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+img, video {
+  max-width: 100%;
+  display: block;
+}
+
+/* Shared container */
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+@media (min-width: 768px) {
+  .container { padding: 0 24px; }
+}
+
+/* Accessible focus ring */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Screen-reader-only helper */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Lock page scroll while a modal is open */
+body.modal-open {
+  overflow: hidden;
+}

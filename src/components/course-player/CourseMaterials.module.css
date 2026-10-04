@@ -1,0 +1,122 @@
+.card {
+  background: var(--color-surface);
+  border-radius: 3px;
+  box-shadow: 0 0 30px 10px rgba(0, 0, 0, 0.04);
+  padding: 20px 40px 26px;
+}
+
+/* Card-internal title is a mobile-reference detail only */
+.cardTitle {
+  display: none;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 76px;
+}
+
+.column {
+  margin: 0;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.column .row:last-child {
+  border-bottom: none;
+}
+
+/* Instructor row appears only on mobile, per the references */
+.mobileOnlyRow {
+  display: none;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 16px;
+  color: #2b2b2b;
+  font-weight: 500;
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+  color: #2b2b2b;
+  flex-shrink: 0;
+}
+
+.value {
+  margin: 0;
+  font-size: 15.5px;
+  color: var(--color-ink);
+  text-align: right;
+}
+
+/* Tablet: the left column is narrow, so one comfortable facts column
+   (the duplicate second column is desktop-only) */
+@media (max-width: 991px) {
+  .card {
+    padding: 18px 28px 22px;
+  }
+
+  .columns {
+    grid-template-columns: 1fr;
+  }
+
+  .column:last-child {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .card {
+    padding: 20px 18px;
+    margin-top: 6px;
+  }
+
+  .cardTitle {
+    display: block;
+    font-size: 16.5px;
+    margin-bottom: 4px;
+  }
+
+  .columns {
+    grid-template-columns: 1fr;
+  }
+
+  /* second (duplicate) column disappears on mobile */
+  .column:last-child {
+    display: none;
+  }
+
+  .mobileOnlyRow {
+    display: flex;
+  }
+
+  .row {
+    padding: 13px 0;
+  }
+
+  .label {
+    font-size: 14px;
+    gap: 10px;
+  }
+
+  .label .icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .value {
+    font-size: 13.5px;
+  }
+}

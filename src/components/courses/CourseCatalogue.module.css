@@ -1,0 +1,203 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin: 26px 0 28px;
+}
+
+.chips {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  min-height: 38px;
+  padding: 0 18px;
+  border: 1px solid #e3e8f2;
+  border-radius: 999px;
+  background: #ffffff;
+  font-family: var(--font-heading);
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #596080;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.chip:not(.chipActive):hover {
+  border-color: #c6cde0;
+  color: #171c33;
+}
+
+.chipActive:hover {
+  background: #232b4d;
+  color: #ffffff;
+}
+
+.chipActive {
+  background: #141a33;
+  border-color: #141a33;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.search {
+  position: relative;
+  flex-shrink: 0;
+  width: 300px;
+}
+
+.searchIcon {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  transform: translateY(-50%);
+  color: #9aa2ba;
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  min-height: 40px;
+  padding: 0 14px 0 40px;
+  border: 1px solid #e3e8f2;
+  border-radius: 10px;
+  background: #ffffff;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  color: #171c33;
+}
+
+.searchInput::placeholder {
+  color: #9aa2ba;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  list-style: none;
+  padding-bottom: 70px;
+}
+
+.cell {
+  display: flex;
+}
+
+/* Cards ease in one after another whenever the filter or search changes */
+.cellEnter {
+  opacity: 0;
+  animation: cardIn 0.45s cubic-bezier(0.22, 0.8, 0.3, 1) forwards;
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.975);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cellEnter {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+.empty {
+  padding: 60px 0 90px;
+  text-align: center;
+  color: #596080;
+}
+
+/* "More courses coming soon" placeholder card */
+.comingSoon {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 300px;
+  padding: 28px;
+  border: 1.5px dashed #c9d2e8;
+  border-radius: 14px;
+  text-align: center;
+}
+
+.comingSoonIcon {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: #edeffb;
+  color: #4164da;
+  margin-bottom: 4px;
+}
+
+.comingSoonTitle {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 700;
+  color: #171c33;
+}
+
+.comingSoonText {
+  max-width: 250px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #767d95;
+}
+
+.squiggle {
+  margin-top: 6px;
+  color: #4164da;
+  opacity: 0.6;
+}
+
+@media (max-width: 1199px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 991px) {
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search {
+    width: 100%;
+  }
+
+  /* chips scroll horizontally inside their row — the page itself never does */
+  .chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+
+  .chips::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (max-width: 639px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .toolbar {
+    margin: 20px 0 22px;
+  }
+}

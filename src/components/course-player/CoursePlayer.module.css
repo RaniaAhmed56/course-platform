@@ -1,0 +1,118 @@
+.page {
+  padding-bottom: 80px;
+}
+
+/* ---------------------------------------------------------------------------
+   Page grid.
+   Desktop:  player + materials/comments on the left, curriculum on the right.
+   Wide:     player spans the full width, course content drops below it.
+   Mobile:   player → materials → curriculum → comments (reference order).
+   --------------------------------------------------------------------------- */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 382px;
+  column-gap: 64px;
+  grid-template-areas:
+    "player  sidebar"
+    "meta    sidebar"
+    "comments sidebar"
+    "footer  .";
+  align-items: start;
+  padding-top: 20px;
+}
+
+.playerArea   { grid-area: player; min-width: 0; }
+.metaArea     { grid-area: meta; min-width: 0; }
+.sidebarArea {
+  grid-area: sidebar;
+  min-width: 0;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+}
+.commentsArea {
+  grid-area: comments;
+  min-width: 0;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+}
+.footerArea   { grid-area: footer; margin-top: 26px; }
+
+/* Theater ("Wide") mode — desktop only */
+.layout.wide {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "player"
+    "sidebar"
+    "meta"
+    "comments"
+    "footer";
+}
+
+.layout.wide .sidebarArea {
+  margin-top: 34px;
+}
+
+.sectionTitle {
+  font-size: 27px;
+  margin: 36px 0 20px;
+}
+
+@media (max-width: 1199px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr) 340px;
+    column-gap: 36px;
+  }
+}
+
+/* Tablet: keep the two-column layout with a narrower sidebar, so the video
+   stays compact and the curriculum is visible beside it */
+@media (max-width: 991px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr) 300px;
+    column-gap: 24px;
+  }
+
+  .sectionTitle {
+    font-size: 23px;
+  }
+}
+
+@media (max-width: 767px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "player"
+      "meta"
+      "sidebar"
+      "comments"
+      "footer";
+    padding-top: 0;
+  }
+
+  /* Sticky video while scrolling — like YouTube on mobile */
+  .playerArea {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: var(--color-surface);
+    padding: 8px 0;
+  }
+
+  .sidebarArea {
+    margin-top: 34px;
+  }
+
+  .sectionTitle {
+    font-size: 21px;
+    margin: 28px 0 14px;
+  }
+}
+
+/* On mobile the "Course Materials" title lives inside the card (reference) */
+@media (max-width: 767px) {
+  .materials .sectionTitle {
+    display: none;
+  }
+}

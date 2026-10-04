@@ -1,0 +1,72 @@
+.hero {
+  position: relative;
+  overflow: hidden;
+  /* matches the illustration's own top/bottom background tones,
+     so the full-height art melts into the band with no visible edges */
+  background: linear-gradient(180deg, #f1f4fe, #fafcfe);
+}
+
+/* Full-band-height illustration, flush right, feathered on its left edge */
+.art {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: auto;
+  pointer-events: none;
+  user-select: none;
+}
+
+.inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 214px;
+  padding-top: 26px;
+  padding-bottom: 26px;
+}
+
+.copy {
+  max-width: 520px;
+}
+
+.eyebrow {
+  font-family: var(--font-heading);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: #4164da;
+}
+
+.title {
+  margin-top: 10px;
+  font-size: 40px;
+  font-weight: 700;
+  color: #171c33;
+}
+
+.subtitle {
+  margin-top: 12px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: #5a6078;
+}
+
+@media (max-width: 1100px) {
+  /* keep the copy readable as the art slides toward the edge */
+  .art {
+    right: -120px;
+    opacity: 0.85;
+  }
+}
+
+@media (max-width: 991px) {
+  .title { font-size: 32px; }
+}
+
+@media (max-width: 767px) {
+  .art { display: none; }
+  .inner { min-height: 0; }
+  .title { font-size: 28px; }
+}

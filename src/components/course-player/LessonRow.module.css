@@ -1,0 +1,112 @@
+.item {
+  border-bottom: 1px solid #ededed;
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 17px 2px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 500;
+  color: #26282b;
+  transition: color 0.15s ease;
+}
+
+.row:hover {
+  color: var(--color-primary);
+}
+
+.docIcon {
+  flex-shrink: 0;
+  color: #3f4245;
+}
+
+.titleWrap {
+  flex: 1;
+  min-width: 0;
+  line-height: 1.45;
+}
+
+.titleText {
+  overflow-wrap: anywhere;
+}
+
+/* current lesson state */
+.current {
+  color: var(--color-primary);
+}
+
+.current .docIcon {
+  color: var(--color-primary);
+}
+
+.locked {
+  cursor: not-allowed;
+}
+
+.locked:hover {
+  color: #26282b;
+}
+
+.stateIcon {
+  flex-shrink: 0;
+  color: #3f4245;
+}
+
+.checkIcon {
+  color: var(--color-primary);
+}
+
+.badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.badge {
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  padding: 4px 7px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+.badgeQuestion {
+  color: var(--color-primary);
+  background: var(--color-badge-green-bg);
+}
+
+.badgeMinutes {
+  color: var(--color-pink);
+  background: var(--color-badge-pink-bg);
+}
+
+/* Narrow sidebar (tablet) and small phones: badges stack vertically */
+@media (min-width: 768px) and (max-width: 991px) {
+  .badges {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+  }
+}
+
+@media (max-width: 420px) {
+  .badges {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+  }
+}

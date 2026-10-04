@@ -1,0 +1,110 @@
+.body {
+  padding: 34px 30px 30px;
+}
+
+.header {
+  text-align: center;
+}
+
+.courseName {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 500;
+  color: #2b3990;
+}
+
+.title {
+  margin-top: 4px;
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 700;
+  color: #2b3990;
+}
+
+.message {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 22px;
+  padding: 18px 20px;
+  border-radius: 10px;
+  background: #eff4f8;
+  color: #2b3990;
+  font-size: 15.5px;
+  line-height: 2;
+  text-align: right;
+}
+
+/* big emoji at the start of the message, about two text lines tall */
+.messageEmoji {
+  font-size: 42px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.messageText {
+  flex: 1;
+}
+
+.panel {
+  list-style: none;
+  margin-top: 30px;
+  padding: 24px;
+  border-radius: 24px;
+  background: var(--color-panel);
+  display: flex;
+  flex-direction: column;
+  gap: 19px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 64px;
+  padding: 0 18px;
+  border: 1px solid #e8ecef;
+  border-radius: 12px;
+  background: var(--color-surface);
+  box-shadow: 0 1px 4px rgba(20, 30, 60, 0.05);
+}
+
+.rank {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-band);
+  color: var(--color-navy);
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.name {
+  flex: 1;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--color-ink);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.points {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.me {
+  border-color: var(--color-primary);
+  background: var(--color-badge-green-bg);
+}
+
+.me .points,
+.me .name {
+  color: var(--color-primary);
+}
