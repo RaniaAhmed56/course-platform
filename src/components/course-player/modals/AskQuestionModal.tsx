@@ -66,6 +66,7 @@ export default function AskQuestionModal({ open, onClose, courseId }: AskQuestio
             </label>
             <textarea
               id="ask-question-box"
+              dir="auto"
               className={styles.textarea}
               placeholder="Write your question"
               value={draft}

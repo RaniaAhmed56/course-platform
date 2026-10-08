@@ -64,6 +64,21 @@ export const DocIcon = (p: IconProps) => (
   </Base>
 );
 
+export const VideoIcon = (p: IconProps) => (
+  <Base {...p}>
+    <rect x="3" y="5" width="18" height="14" rx="2.5" />
+    <path d="M10.3 9.4c0-.6.7-1 1.2-.7l4 2.6c.5.3.5 1 0 1.4l-4 2.6c-.5.3-1.2-.1-1.2-.7V9.4z" fill="currentColor" stroke="none" />
+  </Base>
+);
+
+export const ClipboardIcon = (p: IconProps) => (
+  <Base {...p}>
+    <rect x="5.5" y="4.5" width="13" height="16" rx="2" />
+    <path d="M9 4.5V3.8A1.3 1.3 0 0 1 10.3 2.5h3.4A1.3 1.3 0 0 1 15 3.8v.7" />
+    <path d="m9 13 2 2 4-4.5" />
+  </Base>
+);
+
 export const LockIcon = (p: IconProps) => (
   <Base {...p}>
     <rect x="6.5" y="10.5" width="11" height="9" rx="4.5" />

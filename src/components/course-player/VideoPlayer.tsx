@@ -28,6 +28,8 @@ interface VideoPlayerProps {
   lesson?: Lesson;
   lessonNumber: number;
   wide: boolean;
+  /** Increments when the player should auto-start the new lesson (auto-advance). */
+  autoPlayToken?: number;
   onToggleWide: () => void;
   onEnded: () => void;
 }
@@ -45,11 +47,15 @@ export default function VideoPlayer({
   lesson,
   lessonNumber,
   wide,
+  autoPlayToken = 0,
   onToggleWide,
   onEnded,
 }: VideoPlayerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const lastAutoPlayToken = useRef(autoPlayToken);
+  const endedFired = useRef(false);
   const [playing, setPlaying] = useState(false);
   const [started, setStarted] = useState(false);
 
@@ -59,21 +65,72 @@ export default function VideoPlayer({
       ? lesson.videoUrl
       : SAMPLE_VIDEOS[Math.max(0, lessonNumber - 1) % SAMPLE_VIDEOS.length];
 
-  /* Reset playback when the lesson changes */
+  /* Reset playback when the lesson changes; auto-start it when the change
+     came from auto-advance (previous video finished). */
   useEffect(() => {
     setPlaying(false);
     setStarted(false);
+    endedFired.current = false;
     videoRef.current?.pause();
     videoRef.current?.load();
-  }, [lesson?.id]);
+
+    if (lastAutoPlayToken.current !== autoPlayToken) {
+      lastAutoPlayToken.current = autoPlayToken;
+      if (youTubeId) {
+        // YouTube lesson: load the embed immediately with autoplay
+        setStarted(true);
+        setPlaying(true);
+      } else {
+        videoRef.current?.play().catch(() => {});
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lesson?.id, autoPlayToken]);
+
+  /* ----- detect when a YouTube embed finishes (enablejsapi postMessage).
+         The widget starts reporting state after a "listening" handshake;
+         playerState 0 = ended → advance like a native video. ----- */
+  useEffect(() => {
+    if (!started || !youTubeId) return;
+
+    const handleMessage = (event: MessageEvent) => {
+      if (event.origin !== "https://www.youtube.com") return;
+      try {
+        const data = typeof event.data === "string" ? JSON.parse(event.data) : event.data;
+        const state = data?.info?.playerState ?? (data?.event === "onStateChange" ? data?.info : null);
+        if (state === 0 && !endedFired.current) {
+          endedFired.current = true;
+          setPlaying(false);
+          onEnded();
+        }
+      } catch {
+        /* non-JSON message — ignore */
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+    // handshake (retried until the player answers) so the embed sends events
+    const handshake = window.setInterval(() => {
+      iframeRef.current?.contentWindow?.postMessage(
+        JSON.stringify({ event: "listening", id: youTubeId, channel: "widget" }),
+        "https://www.youtube.com"
+      );
+    }, 500);
+
+    return () => {
+      window.removeEventListener("message", handleMessage);
+      window.clearInterval(handshake);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [started, youTubeId]);
 
   const togglePlay = () => {
     if (youTubeId) {
-      // facade → swap in the autoplaying embed; count the lesson as watched
+      // facade → swap in the autoplaying embed; completion is detected
+      // for real when the embed reports the video ended
       if (!started) {
         setStarted(true);
         setPlaying(true);
-        onEnded();
       }
       return;
     }
@@ -106,8 +163,9 @@ export default function VideoPlayer({
         {youTubeId ? (
           started ? (
             <iframe
+              ref={iframeRef}
               className={styles.video}
-              src={`https://www.youtube.com/embed/${youTubeId}?autoplay=1&rel=0`}
+              src={`https://www.youtube.com/embed/${youTubeId}?autoplay=1&rel=0&enablejsapi=1`}
               title={`Video: ${lesson?.title ?? course.title}`}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen

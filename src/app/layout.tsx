@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Suspense } from "react";
+import GuestGate from "@/components/layout/GuestGate";
 import "./globals.css";
 
 /* Self-hosted fonts (woff2, latin subset) — no external font requests. */
@@ -38,7 +40,12 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${spartan.variable} ${quicksand.variable}`}>
-      <body>{children}</body>
+      <body>
+        <Suspense>
+          <GuestGate />
+        </Suspense>
+        {children}
+      </body>
     </html>
   );
 }

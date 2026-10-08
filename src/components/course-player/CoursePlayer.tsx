@@ -42,6 +42,7 @@ export default function CoursePlayer({ course }: { course: Course }) {
   const [modalLesson, setModalLesson] = useState<Lesson | null>(null);
   const [toast, setToast] = useState<string | null>(null);
   const [wide, setWide] = useState(false);
+  const [autoPlayToken, setAutoPlayToken] = useState(0);
   const hydrated = useRef(false);
 
   /* ----- hydrate persisted state after mount (seeded from the course's
@@ -114,6 +115,31 @@ export default function CoursePlayer({ course }: { course: Course }) {
     [isUnlocked, markCompleted]
   );
 
+  /* ----- when a video finishes: mark it completed and continue straight
+         to the next video lesson (autoplaying), like a real course player ----- */
+  const handleVideoEnded = useCallback(() => {
+    if (!currentLesson) return;
+    const updatedIds = completedIds.includes(currentLesson.id)
+      ? completedIds
+      : [...completedIds, currentLesson.id];
+    setCompletedIds(updatedIds);
+
+    for (let i = currentIndex + 1; i < lessons.length; i += 1) {
+      const next = lessons[i];
+      if (next.type !== "video") continue; // PDFs / exams are opened manually
+      const unlocked =
+        !next.locked ||
+        updatedIds.includes(next.id) ||
+        updatedIds.includes(lessons[i - 1]?.id ?? "");
+      if (unlocked) {
+        setCurrentLessonId(next.id);
+        setAutoPlayToken((token) => token + 1);
+        setToast(`Lesson completed — up next: ${next.title}`);
+      }
+      break;
+    }
+  }, [currentLesson, currentIndex, completedIds, lessons]);
+
   const scrollTo = useCallback((id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, []);
@@ -128,7 +154,7 @@ export default function CoursePlayer({ course }: { course: Course }) {
       <PageBand
         title={course.title}
         crumbs={[
-          { label: "Home", href: "/" },
+          { label: "Home", href: "/home" },
           { label: "Courses", href: "/courses" },
           { label: "Course Details" },
         ]}
@@ -144,10 +170,9 @@ export default function CoursePlayer({ course }: { course: Course }) {
                 currentLesson ? lessons.findIndex((l) => l.id === currentLesson.id) + 1 : 0
               }
               wide={wide}
+              autoPlayToken={autoPlayToken}
               onToggleWide={() => setWide((value) => !value)}
-              onEnded={() => {
-                if (currentLesson) markCompleted(currentLesson.id);
-              }}
+              onEnded={handleVideoEnded}
             />
           </div>
 

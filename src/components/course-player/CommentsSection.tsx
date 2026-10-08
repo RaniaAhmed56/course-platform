@@ -75,7 +75,7 @@ export default function CommentsSection({ courseId }: { courseId: string }) {
             <div className={styles.commentBody}>
               <h3 className={styles.author}>{comment.author}</h3>
               <p className={styles.date}>{comment.date}</p>
-              <p className={styles.text}>{comment.body}</p>
+              <p className={styles.text} dir="auto">{comment.body}</p>
             </div>
           </li>
         ))}
@@ -87,6 +87,7 @@ export default function CommentsSection({ courseId }: { courseId: string }) {
         </label>
         <textarea
           id="comment-box"
+          dir="auto"
           className={styles.textarea}
           placeholder="Write a comment"
           value={draft}

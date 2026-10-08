@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import type { Course } from "@/types/course";
 import CourseCard from "./CourseCard";
 import styles from "./CourseCatalogue.module.css";
@@ -8,10 +9,22 @@ import styles from "./CourseCatalogue.module.css";
 /**
  * Interactive catalogue: category filter chips + course search + card grid.
  * Client component — everything else on the page stays server-rendered.
+ * The header search writes `?q=` into the URL; this component stays in
+ * sync with it, so both search fields filter the same grid.
  */
 export default function CourseCatalogue({ courses }: { courses: Course[] }) {
-  const [category, setCategory] = useState<string>("All Courses");
-  const [query, setQuery] = useState("");
+  const searchParams = useSearchParams();
+  const [category, setCategory] = useState<string>(
+    () => searchParams.get("cat") ?? "All Courses"
+  );
+  const [query, setQuery] = useState(() => searchParams.get("q") ?? "");
+
+  /* Follow the header search / URL (?q=...) and category links (?cat=...) */
+  useEffect(() => {
+    setQuery(searchParams.get("q") ?? "");
+    const cat = searchParams.get("cat");
+    if (cat) setCategory(cat);
+  }, [searchParams]);
 
   const categories = useMemo(() => {
     const preferred = ["Development", "Design", "Data Science", "Marketing", "Language", "Creative"];
@@ -68,6 +81,7 @@ export default function CourseCatalogue({ courses }: { courses: Course[] }) {
           <input
             id="course-search"
             type="search"
+            dir="auto"
             className={styles.searchInput}
             placeholder="Search for a course..."
             value={query}
@@ -81,7 +95,7 @@ export default function CourseCatalogue({ courses }: { courses: Course[] }) {
           No courses match your search — try a different keyword or category.
         </p>
       ) : (
-        <ul className={styles.grid} key={`${category}|${query.trim().toLowerCase()}`}>
+        <ul className={styles.grid} key={category}>
           {visible.map((course, index) => (
             <li
               key={course.id}

@@ -2,7 +2,7 @@
 
 import type { Lesson } from "@/types/course";
 import { getExamMeta } from "@/data/exams";
-import { CheckCircleIcon, DocIcon, LockIcon } from "@/components/ui/Icon";
+import { CheckCircleIcon, ClipboardIcon, DocIcon, LockIcon, VideoIcon } from "@/components/ui/Icon";
 import styles from "./LessonRow.module.css";
 
 interface LessonRowProps {
@@ -14,7 +14,8 @@ interface LessonRowProps {
 }
 
 /**
- * One curriculum row: document icon + title on the left; QUESTION / MINUTES
+ * One curriculum row: type icon (video / exam / document) + title on the
+ * left; QUESTION / MINUTES
  * badges for exams, padlock for locked lessons, check for completed ones.
  */
 export default function LessonRow({
@@ -42,7 +43,13 @@ export default function LessonRow({
         onClick={onSelect}
         aria-current={isCurrent ? "true" : undefined}
       >
-        <DocIcon size={19} className={styles.docIcon} />
+        {lesson.type === "video" ? (
+          <VideoIcon size={19} className={styles.docIcon} />
+        ) : lesson.type === "exam" ? (
+          <ClipboardIcon size={19} className={styles.docIcon} />
+        ) : (
+          <DocIcon size={19} className={styles.docIcon} />
+        )}
         <span className={styles.titleWrap}>
           <span className={styles.titleText}>{lesson.title}</span>
           <span className="sr-only">{stateLabel}</span>

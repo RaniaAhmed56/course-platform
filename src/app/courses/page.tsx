@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import SiteHeader from "@/components/courses/SiteHeader";
 import CoursesHero from "@/components/courses/CoursesHero";
 import CourseCatalogue from "@/components/courses/CourseCatalogue";
@@ -17,10 +18,14 @@ export const metadata: Metadata = {
 export default function CoursesPage() {
   return (
     <div className={styles.page}>
-      <SiteHeader />
+      <Suspense>
+        <SiteHeader />
+      </Suspense>
       <main>
         <CoursesHero />
-        <CourseCatalogue courses={courses} />
+        <Suspense>
+          <CourseCatalogue courses={courses} />
+        </Suspense>
       </main>
     </div>
   );
