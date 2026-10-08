@@ -93,6 +93,8 @@ test("header search expands and filters the catalogue", async ({ page }) => {
   await expect(page).toHaveURL(/q=react/);
   await expect(page.locator("article")).toHaveCount(1);
   await expect(page.locator("article h2")).toContainText("React in Practice");
+  // the two search fields are independent — the catalogue field stays empty
+  await expect(page.locator("#course-search")).toHaveValue("");
   // closing the search clears the filter
   await page.getByRole("button", { name: "Close search" }).click();
   await expect(page.locator("article")).toHaveCount(8);

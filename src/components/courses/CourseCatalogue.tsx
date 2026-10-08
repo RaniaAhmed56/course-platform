@@ -9,19 +9,21 @@ import styles from "./CourseCatalogue.module.css";
 /**
  * Interactive catalogue: category filter chips + course search + card grid.
  * Client component — everything else on the page stays server-rendered.
- * The header search writes `?q=` into the URL; this component stays in
- * sync with it, so both search fields filter the same grid.
+ * The header search (?q= in the URL) and this section's own search field
+ * are independent: each applies its own filter without writing into the
+ * other one.
  */
 export default function CourseCatalogue({ courses }: { courses: Course[] }) {
   const searchParams = useSearchParams();
   const [category, setCategory] = useState<string>(
     () => searchParams.get("cat") ?? "All Courses"
   );
-  const [query, setQuery] = useState(() => searchParams.get("q") ?? "");
+  /* local field only — never pre-filled from the header search */
+  const [query, setQuery] = useState("");
+  const headerQuery = (searchParams.get("q") ?? "").trim().toLowerCase();
 
-  /* Follow the header search / URL (?q=...) and category links (?cat=...) */
+  /* Follow category links (?cat=...) from the Home page */
   useEffect(() => {
-    setQuery(searchParams.get("q") ?? "");
     const cat = searchParams.get("cat");
     if (cat) setCategory(cat);
   }, [searchParams]);
@@ -33,14 +35,18 @@ export default function CourseCatalogue({ courses }: { courses: Course[] }) {
     return ["All Courses", ...present];
   }, [courses]);
 
+  const matches = (course: Course, q: string) =>
+    q.length === 0 ||
+    course.title.toLowerCase().includes(q) ||
+    course.instructor.toLowerCase().includes(q);
+
   const visible = courses.filter((course) => {
     const inCategory = category === "All Courses" || course.category === category;
-    const q = query.trim().toLowerCase();
-    const inQuery =
-      q.length === 0 ||
-      course.title.toLowerCase().includes(q) ||
-      course.instructor.toLowerCase().includes(q);
-    return inCategory && inQuery;
+    return (
+      inCategory &&
+      matches(course, headerQuery) &&
+      matches(course, query.trim().toLowerCase())
+    );
   });
 
   return (
